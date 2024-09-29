@@ -49,9 +49,9 @@ class ScreenGameState extends State<ScreenGame>{
                       game.winGame();
                       if(game.winner == true){
                         mostrarLinha = true;
-                        // alerta(context);
+                        alerta(context);
                       }else if(game.zebra == true){
-                        // alerta(context);
+                        alerta(context);
                       }
                     },
                   //tabuleiro
