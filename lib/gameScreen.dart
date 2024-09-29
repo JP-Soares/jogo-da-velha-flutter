@@ -15,6 +15,8 @@ class ScreenGame extends StatefulWidget{
 class ScreenGameState extends State<ScreenGame>{
 
   Game game = Game();
+  bool mostrarLinha = false;
+
   List<Color> colorPlayer = List.generate(9, (index) => Colors.black);
 
   @override
@@ -27,7 +29,8 @@ class ScreenGameState extends State<ScreenGame>{
         
       Center(//tabuleiro
           child:SizedBox(height:500, 
-          child: GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(//Malha do tabuleiro
+          child: Stack(
+          children: [GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(//Malha do tabuleiro
                 crossAxisCount: 3,//número de colunas
                 childAspectRatio: 1.0,//espaço entre as células
               ), itemCount: 9, itemBuilder: (context, index){
@@ -45,13 +48,20 @@ class ScreenGameState extends State<ScreenGame>{
                       });
                       game.winGame();
                       if(game.winner == true){
-                        alerta(context);
+                        mostrarLinha = true;
+                        // alerta(context);
+                      }else if(game.zebra == true){
+                        // alerta(context);
                       }
                     },
+                  //tabuleiro
                   child: Container(
+                    margin: EdgeInsets.all(4.0),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black, width: 2),
+                      borderRadius: BorderRadius.circular(10)
                     ),
+  
                     child: Center(
                       child: Text(game.tabuleiro[index],
                       style: TextStyle(fontSize: 32,
@@ -63,11 +73,20 @@ class ScreenGameState extends State<ScreenGame>{
                 );
               }
             ),
-        )
+             
+            // if (mostrarLinha){
+            //    Linha linha = Linha(
+            //      game.combinacao,
+            //      200
+            //    ),
+            // }
+
+      ]),)
         ),
         ElevatedButton(
           onPressed: (){
              setState(() {
+              mostrarLinha = false;
                game.restart();
              });
           },
@@ -94,9 +113,9 @@ class ScreenGameState extends State<ScreenGame>{
         const SizedBox(height: 100,),//distância da primeira lnha do placar para o topo da página
         Row( mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("PLayer 1", style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.red)),
+            Text("Player 1", style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.red)),
             const SizedBox(width: 100,),
-            Text("PLayer 2", style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.blue)),
+            Text("Player 2", style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.blue)),
           ],
           ),
           const SizedBox(height: 20,),//distância entre as duas linhas do placar
@@ -117,7 +136,7 @@ class ScreenGameState extends State<ScreenGame>{
                 ],
               ),
             ),
-            const SizedBox(width: 90,),
+            const SizedBox(width: 90),
             RichText(
               text: TextSpan(
                 children: [
@@ -142,13 +161,22 @@ class ScreenGameState extends State<ScreenGame>{
 
 
   alerta(BuildContext context){//alerta do resultado final
+
+    Color colorText = Colors.black;
+    if(game.playerWinner == 'X'){
+      colorText = Colors.red;
+    }else{
+      colorText = Colors.blue;
+    }
+
+
     showDialog(
       context: context,
       builder: (BuildContext context){
       return
       AlertDialog(
-        title: Text('${game.playerWinner} WINS!'),
-        content: const Text('END GAME!'),
+        title: Text('${game.playerWinner} WINS!', textAlign: TextAlign.center, style: TextStyle(color: colorText, fontFamily: 'Coiny'),),
+        content: Text('END GAME!', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Coiny'),),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -171,5 +199,35 @@ class ScreenGameState extends State<ScreenGame>{
         ],
       );
     });
+  }
+}
+
+
+//linha para destacar a combinação vencedora
+class Linha extends CustomPainter {
+  final List<int> winningLine;
+  final double cellSize;
+
+  Linha(this.winningLine, this.cellSize);//construtor
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (winningLine.isNotEmpty) {
+      final paint = Paint()
+        ..color = Colors.red
+        ..strokeWidth = 5;
+
+      double x1 = (winningLine[0] % 3) * cellSize + cellSize / 2;
+      double y1 = (winningLine[0] ~/ 3) * cellSize + cellSize / 2;
+      double x2 = (winningLine[2] % 3) * cellSize + cellSize / 2;
+      double y2 = (winningLine[2] ~/ 3) * cellSize + cellSize / 2;
+
+      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
