@@ -57,6 +57,8 @@ flutter:
       fonts:
         - asset: assets/fonts/Coiny-Regular.ttf
           weight: 100
+  assets:
+    - assets/img/fundo_home.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
