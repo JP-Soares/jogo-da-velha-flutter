@@ -39,6 +39,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_svg: ^1.0.3
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -57,8 +58,17 @@ flutter:
       fonts:
         - asset: assets/fonts/Coiny-Regular.ttf
           weight: 100
+    - family: Chakra
+      fonts:
+        - asset: assets/fonts/ChakraPetch-Regular.ttf
+          weight: 100
   assets:
     - assets/img/fundo_home.png
+    - assets/img/robot.svg
+    - assets/img/two.svg
+    - assets/img/play.svg
+    - assets/img/restart.svg
+    - assets/img/home.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

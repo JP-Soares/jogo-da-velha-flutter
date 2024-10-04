@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jogovelha/choose_game.dart';
 
 import 'package:jogovelha/game.dart';
 
 class ScreenGame extends StatefulWidget{
-  const ScreenGame({super.key});
+  final String gameMode;
+  final int difficult;
+
+  const ScreenGame(this.gameMode, this.difficult, {Key? key}) : super(key: key);
 
     @override
     State<StatefulWidget> createState(){
@@ -14,8 +19,15 @@ class ScreenGame extends StatefulWidget{
 
 class ScreenGameState extends State<ScreenGame>{
 
-  Game game = Game();
+  late Game game; // Declare a variável do tipo Game
   bool mostrarLinha = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializa a variável 'game' com os valores recebidos
+    game = Game(widget.gameMode, widget.difficult);
+  }
 
   List<Color> colorPlayer = List.generate(9, (index) => Colors.black);
 
@@ -23,7 +35,7 @@ class ScreenGameState extends State<ScreenGame>{
   Widget build(BuildContext context){
     return Scaffold(
 
-      body: Column( children: [
+      body: Column( mainAxisAlignment: MainAxisAlignment.center, children: [
       
       placar(),
         
@@ -42,11 +54,17 @@ class ScreenGameState extends State<ScreenGame>{
                         if(game.tabuleiro[index] == "X" || game.tabuleiro[index] == "O"){//verifica se o espaço clicado está preenchido ou não.
                           return;
                         }else{
-                          game.tabuleiro[index] = game.changePlayer();//altera o texto do tabuleiro
-                          colorPlayer[index] = mudarCor(game.player);
+                          if(game.gameMode == 'p'){
+                            print(game.gameMode);
+                            game.tabuleiro[index] = game.changePlayer();//altera o texto do tabuleiro
+                            colorPlayer[index] = mudarCor(game.player);
+                          }else if(game.gameMode == 'r'){
+                            print('robot');
+                          }
+                          game.winGame();
                         }
                       });
-                      game.winGame();
+                      
                       if(game.winner == true){
                         mostrarLinha = true;
                         alerta(context);
@@ -87,11 +105,16 @@ class ScreenGameState extends State<ScreenGame>{
           onPressed: (){
              setState(() {
               mostrarLinha = false;
-               game.restart();
+              game.restart();
+              game.newGame();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ChooseGame()));
              });
           },
-          child: const Text("Restart", 
-            style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.green),),
+          child: Row( mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/img/home.svg', width: 40, height: 40),
+            ],
+          ), style: ElevatedButton.styleFrom(backgroundColor: Colors.lightGreen, minimumSize: Size(30,30)),
         ),
     ],),
     );
@@ -105,6 +128,10 @@ class ScreenGameState extends State<ScreenGame>{
       return Colors.blue; // Ou você pode usar Colors.black se for 'O'
     }
   }
+
+
+
+
 
   //gera o placar
   placar(){
@@ -165,17 +192,27 @@ class ScreenGameState extends State<ScreenGame>{
     Color colorText = Colors.black;
     if(game.playerWinner == 'X'){
       colorText = Colors.red;
-    }else{
+    }else if(game.playerWinner == 'O'){
       colorText = Colors.blue;
+    }
+
+    String text = '';
+
+    if(game.winner == true){
+      text = '${game.playerWinner} WINS!';
+    }else{
+      colorText = Colors.lightGreen;
+      text = 'DRAW';
     }
 
 
     showDialog(
       context: context,
       builder: (BuildContext context){
+
       return
       AlertDialog(
-        title: Text('${game.playerWinner} WINS!', textAlign: TextAlign.center, style: TextStyle(color: colorText, fontFamily: 'Coiny'),),
+        title: Text('${text}', textAlign: TextAlign.center, style: TextStyle(color: colorText, fontFamily: 'Coiny'),),
         content: Text('END GAME!', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Coiny'),),
         actions: <Widget>[
           TextButton(

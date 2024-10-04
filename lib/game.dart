@@ -1,6 +1,10 @@
+import 'dart:math';
+
+
 class Game {
   List<String> tabuleiro = List.filled(9, "");
   List <int> combinacao = List.filled(3, 0);
+
 
   String player = 'X';
   int scoreX = 0;
@@ -11,6 +15,13 @@ class Game {
   bool winner = false;
   bool zebra = false;
 
+
+  String gameMode;
+  int difficult;
+
+
+  Game(this.gameMode, this.difficult);
+
   changePlayer(){
     // return player = (player == 'X') ? 'O' : 'X';
     if(player == 'X'){
@@ -18,6 +29,7 @@ class Game {
     }else if(player == 'O'){
       return player = 'X';
     }
+
   }
 
   newGame(){
@@ -93,6 +105,33 @@ class Game {
     }else if(winner == 'O'){
       print('O winner');
       return scoreO++;
+    }
+  }
+
+
+  robot(difficult){
+    List<int> chooses = List.filled(9, 0);
+
+    for(int i = 0; i < tabuleiro.length; i++){
+      if(tabuleiro[i] == 'X' || tabuleiro[i] == 'O'){
+        continue;
+      }else{
+        for(int j = 0; j < i; j++){
+          chooses[j] = i;
+        }
+      }
+    }
+
+    Random random = Random();
+
+    if(difficult == 0){
+
+    }else if(difficult == 1){
+
+    }else if(difficult == 2){
+
+    }else{
+      return;
     }
   }
 }
