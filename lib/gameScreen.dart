@@ -59,7 +59,9 @@ class ScreenGameState extends State<ScreenGame>{
                             game.tabuleiro[index] = game.changePlayer();//altera o texto do tabuleiro
                             colorPlayer[index] = mudarCor(game.player);
                           }else if(game.gameMode == 'r'){
-                            print('robot');
+                            game.tabuleiro[game.robot(game.difficult)] = game.changePlayer();
+                            print(game.robot(game.difficult));
+                            colorPlayer[game.robot(game.difficult)] = mudarCor(game.player);
                           }
                           game.winGame();
                         }

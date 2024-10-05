@@ -110,22 +110,24 @@ class Game {
 
 
   robot(difficult){
-    List<int> chooses = List.filled(9, 0);
+    List<int> chooses = [];
 
     for(int i = 0; i < tabuleiro.length; i++){
-      if(tabuleiro[i] == 'X' || tabuleiro[i] == 'O'){
-        continue;
-      }else{
-        for(int j = 0; j < i; j++){
-          chooses[j] = i;
-        }
+      if(tabuleiro[i] != 'X' && tabuleiro[i] != 'O'){
+        chooses.add(i);
       }
     }
 
+    if(chooses.isEmpty){
+      return null;
+    }
+
     Random random = Random();
+    int jogada = 0;
 
     if(difficult == 0){
-
+      jogada = chooses[random.nextInt(chooses.length)];
+      return jogada;
     }else if(difficult == 1){
 
     }else if(difficult == 2){
