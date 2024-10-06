@@ -29,7 +29,11 @@ class ScreenGameState extends State<ScreenGame>{
     game = Game(widget.gameMode, widget.difficult);
   }
 
+
+
   List<Color> colorPlayer = List.generate(9, (index) => Colors.black);
+  int jogadaRobot = 0;
+
 
   @override
   Widget build(BuildContext context){
@@ -39,70 +43,48 @@ class ScreenGameState extends State<ScreenGame>{
       
       placar(),
         
-      Center(//tabuleiro
-          child:SizedBox(height:500, 
+      Center( // tabuleiro
+        child: SizedBox(
+          height: 500,
           child: Stack(
-          children: [GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(//Malha do tabuleiro
-                crossAxisCount: 3,//número de colunas
-                childAspectRatio: 1.0,//espaço entre as células
-              ), itemCount: 9, itemBuilder: (context, index){
+            children: [
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount( // Malha do tabuleiro
+                  crossAxisCount: 3, // número de colunas
+                  childAspectRatio: 1.0, // espaço entre as células
+                ),
+                itemCount: 9,
+                itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
-                      setState((){
-                        // print('$index');
-                        // print(game.changePlayer());
-                        if(game.tabuleiro[index] == "X" || game.tabuleiro[index] == "O"){//verifica se o espaço clicado está preenchido ou não.
-                          return;
-                        }else{
-                          if(game.gameMode == 'p'){
-                            print(game.gameMode);
-                            game.tabuleiro[index] = game.changePlayer();//altera o texto do tabuleiro
-                            colorPlayer[index] = mudarCor(game.player);
-                          }else if(game.gameMode == 'r'){
-                            game.tabuleiro[game.robot(game.difficult)] = game.changePlayer();
-                            print(game.robot(game.difficult));
-                            colorPlayer[game.robot(game.difficult)] = mudarCor(game.player);
-                          }
-                          game.winGame();
-                        }
-                      });
-                      
-                      if(game.winner == true){
-                        mostrarLinha = true;
-                        alerta(context);
-                      }else if(game.zebra == true){
-                        alerta(context);
-                      }
+                    onTap: () {
+                      _playerMove(index); // Chama a função para a jogada do jogador
                     },
-                  //tabuleiro
-                  child: Container(
-                    margin: EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2),
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-  
-                    child: Center(
-                      child: Text(game.tabuleiro[index],
-                      style: TextStyle(fontSize: 32,
-                      fontFamily: 'Coiny',
-                      color: colorPlayer[index],)
+                    // tabuleiro
+                    child: Container(
+                      margin: EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          game.tabuleiro[index],
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontFamily: 'Coiny',
+                            color: colorPlayer[index],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }
-            ),
-             
-            // if (mostrarLinha){
-            //    Linha linha = Linha(
-            //      game.combinacao,
-            //      200
-            //    ),
-            // }
-
-      ]),)
+                  ); // Mova este ponto e vírgula para cá
+                },
+              ),
+            ],
+          ),
         ),
+      ),
+
         ElevatedButton(
           onPressed: (){
              setState(() {
@@ -133,6 +115,59 @@ class ScreenGameState extends State<ScreenGame>{
 
 
 
+
+
+  void _makeRobotMove() async {
+    await Future.delayed(Duration(seconds: 1));
+    if(game.winner == false && game.zebra == false){
+      int jogadaRobot = game.robot(game.difficult);// Delay de 1 segundo
+    
+      setState(() {
+        game.tabuleiro[jogadaRobot] = game.player; // O robô joga
+        colorPlayer[jogadaRobot] = mudarCor(game.player);
+        game.changePlayer();
+        game.winGame();// Verifica se houve um vencedor após a jogada do robô
+        if (game.winner) {
+          mostrarLinha = true;
+          alerta(context);
+        } else if (game.zebra) {
+          alerta(context);
+        }
+      });
+    }
+  }
+
+
+
+  void _playerMove(int index) {
+  if (game.tabuleiro[index] == "X" || game.tabuleiro[index] == "O") {
+    return; // Verifica se o espaço clicado está preenchido
+  } else {
+    setState(() {
+      if (game.gameMode == 'p') { // Jogador contra jogador
+        game.tabuleiro[index] = game.changePlayer();
+        colorPlayer[index] = mudarCor(game.player);
+      } else if (game.gameMode == 'r') { // Jogador contra computador
+        if (game.player == 'X') {
+          game.tabuleiro[index] = game.player;
+          colorPlayer[index] = mudarCor(game.player);
+          game.changePlayer();
+          if(game.winner == false){
+            _makeRobotMove();
+          }
+        }
+      }
+
+      game.winGame(); // Verifica se houve um vencedor
+      if (game.winner) {
+        mostrarLinha = true;
+        alerta(context);
+      } else if (game.zebra) {
+        alerta(context);
+      }
+    });
+  }
+}
 
 
   //gera o placar
