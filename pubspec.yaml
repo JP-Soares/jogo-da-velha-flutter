@@ -69,6 +69,7 @@ flutter:
     - assets/img/play.svg
     - assets/img/restart.svg
     - assets/img/home.svg
+    - assets/img/star.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

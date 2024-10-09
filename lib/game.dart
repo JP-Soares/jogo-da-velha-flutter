@@ -79,7 +79,7 @@ class Game {
 
     if(tabuleiro[6] == tabuleiro[4] && tabuleiro[6] == tabuleiro[2] && tabuleiro[6] != '' && tabuleiro[4] != '' && tabuleiro[2] != ''){
       combinacao = [6, 4, 2];
-      playerWinner = tabuleiro[0];
+      playerWinner = tabuleiro[6];
       score(playerWinner);
       winner = true;
     }
@@ -111,27 +111,138 @@ class Game {
 
   robot(difficult){
     List<int> chooses = [];
-
-    for(int i = 0; i < tabuleiro.length; i++){
-      if(tabuleiro[i] != 'X' && tabuleiro[i] != 'O'){
-        chooses.add(i);
-      }
-    }
-
-    if(chooses.isEmpty){
-      return null;
-    }
-
-    Random random = Random();
     int jogada = 0;
+    List<int> jogado = [];
 
-    if(difficult == 0){
+    if(difficult == 0){//fácil
+
+      for(int i = 0; i < tabuleiro.length; i++){
+        if(tabuleiro[i] != 'X' && tabuleiro[i] != 'O'){
+          chooses.add(i);
+        }
+      }
+
+      if(chooses.isEmpty){
+        return null;
+      }
+
+      Random random = Random();
+
       jogada = chooses[random.nextInt(chooses.length)];
       return jogada;
-    }else if(difficult == 1){
+    }
+    
+    
+    else if(difficult == 1){//médio
+      for(int i = 0; i < tabuleiro.length; i++){
+        if(tabuleiro[i] != 'X' && tabuleiro[i] != 'O'){
+          chooses.add(i);
+        }else if(tabuleiro[i] == 'X' && tabuleiro[i] == 'O'){
+          jogado.add(i);
+        }
+      }
 
-    }else if(difficult == 2){
+      for(int j = 0; j < 9; j += 3){
+        if(tabuleiro[j] == 'X' && tabuleiro[j + 1] == 'X' && tabuleiro == ''){
+          return jogada = j + 2;
+        }
+      }
 
+      for(int k = 0; k < 3; k++){//colunas
+        if(tabuleiro[k] == 'X' && tabuleiro[k + 3] == 'X' && tabuleiro[k + 6] == ''){
+          print("coluna");
+          return jogada = k + 6;
+        }
+      }
+
+      // Verificar diagonais
+      if (tabuleiro[0] == 'X' && tabuleiro[4] == 'X' && tabuleiro[8] == '') {
+        return jogada = 8;
+      } else if (tabuleiro[0] == 'X' && tabuleiro[8] == 'X' && tabuleiro[4] == '') {
+        return jogada = 4;
+      } else if (tabuleiro[4] == 'X' && tabuleiro[8] == 'X' && tabuleiro[0] == '') {
+        return jogada = 0;
+      }else if (tabuleiro[4] == 'X' && tabuleiro[6] == 'X' && tabuleiro[2] == '') {
+        return jogada = 2;
+      }else if (tabuleiro[4] == 'X' && tabuleiro[2] == 'X' && tabuleiro[6] == '') {
+        return jogada = 6;
+      }
+
+      if(tabuleiro[4] == ''){//se o meio estiver vazio
+        return jogada = 4;
+      }
+
+      if(chooses.isNotEmpty){
+        Random random = Random();
+        return jogada = chooses[random.nextInt(chooses.length)];
+      }
+
+
+
+
+    }else if(difficult == 2){//difícil
+      for(int i = 0; i < tabuleiro.length; i++){
+        if(tabuleiro[i] != 'X' && tabuleiro[i] != 'O'){
+          chooses.add(i);
+        }else if(tabuleiro[i] == 'X' && tabuleiro[i] == 'O'){
+          jogado.add(i);
+        }
+      }
+
+      for(int j = 0; j < 9; j += 3){//linhas
+        if(tabuleiro[j] == 'X' && tabuleiro[j + 1] == 'X' && tabuleiro == ''){
+          print('linhas');
+          return jogada = j + 2;
+        }
+      }
+
+      for(int k = 0; k < 3; k++){//colunas
+        if(tabuleiro[k] == 'X' && tabuleiro[k + 3] == 'X' && tabuleiro[k + 6] == ''){
+          print("coluna");
+          return jogada = k + 6;
+        }
+      }
+
+      // Verificar diagonais
+      if (tabuleiro[0] == 'X' && tabuleiro[4] == 'X' && tabuleiro[8] == '') {
+        return jogada = 8;
+      } else if (tabuleiro[0] == 'X' && tabuleiro[8] == 'X' && tabuleiro[4] == '') {
+        return jogada = 4;
+      } else if (tabuleiro[4] == 'X' && tabuleiro[8] == 'X' && tabuleiro[0] == '') {
+        return jogada = 0;
+      }else if (tabuleiro[4] == 'X' && tabuleiro[6] == 'X' && tabuleiro[2] == '') {
+        return jogada = 2;
+      }else if (tabuleiro[4] == 'X' && tabuleiro[2] == 'X' && tabuleiro[6] == '') {
+        return jogada = 6;
+      }
+
+      if(tabuleiro[4] == ''){//se o meio estiver vazio
+        return jogada = 4;
+      }
+
+      if(chooses.isNotEmpty){
+        if(tabuleiro[0] == 'X' && tabuleiro[6] == 'X' && tabuleiro[3] == ''){
+          print('coluna 1');
+          return jogada = 3;
+        }else if(tabuleiro[0] == 'X' && tabuleiro[2] == 'X' && tabuleiro[1] == ''){
+          print('linha 1');
+          return jogada = 1;
+        }else if(tabuleiro[2] == 'X' && tabuleiro[8] == 'X' && tabuleiro[5] == ''){
+          print('coluna 3');
+          return jogada = 5;
+        }else if(tabuleiro[6] == 'X' && tabuleiro[8] == 'X' && tabuleiro[7] == ''){
+          print('linha 3');
+          return jogada = 7;
+        }else if(tabuleiro[0] == ''){//para jogar nos cantos
+          return jogada = 0;
+        }else if(tabuleiro[2] == ''){
+          return jogada = 2;
+        }else if(tabuleiro[6] == ''){
+          return jogada = 6;
+        }else if(tabuleiro[8] == ''){
+          return jogada = 8;
+        }
+      }
     }else{
       return;
     }

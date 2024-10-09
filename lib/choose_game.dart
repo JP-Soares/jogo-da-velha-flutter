@@ -11,6 +11,7 @@ class ChooseGame extends StatefulWidget{
 
 class ChooseGameState extends State<ChooseGame>{
 
+  bool mostraMode = true;
   String gameMode = '';//robot or player(r;p)
   int difficult = 0;//caso robot, dificuldade 0, 1, 2
 
@@ -26,10 +27,10 @@ class ChooseGameState extends State<ChooseGame>{
     return Scaffold(
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("Choose the Game!", style: TextStyle(fontSize: 32, fontFamily: 'Chakra'),),
+          Text(mostraMode ? "Choose the Game!" : "Chosse the Difficult!", style: TextStyle(fontSize: 32, fontFamily: 'Chakra'),),
 
           SizedBox(height: 60,),
-
+          mostraMode ?
           Container(//btn dois jogadores
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Container(
@@ -68,10 +69,12 @@ class ChooseGameState extends State<ChooseGame>{
                 // border: Border.all(color: Colors.lightBlue, width: 2),
                 borderRadius: BorderRadius.circular(10)
               ),
-              child: ElevatedButton(onPressed: (){
+              child: ElevatedButton(onPressed: (){setState(() {
+                mostraMode = false;
                 gameMode = 'r';
                 difficult = 0;
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ScreenGame(gameMode, difficult)));
+              });
+                //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ScreenGame(gameMode, difficult)));
               }, 
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SvgPicture.asset('assets/img/robot.svg', width: 48, height: 48,),
@@ -82,8 +85,110 @@ class ChooseGameState extends State<ChooseGame>{
               )
             )
           ],),
-        ),
-      ]),)
+        )
+        :Container(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: BoxDecoration(
+                // color: Colors.lightBlue,
+                // border: Border.all(color: Colors.lightBlue, width: 2),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: ElevatedButton(onPressed: (){
+
+                gameMode = 'r';
+                difficult = 0;
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => ScreenGame(gameMode, difficult))
+                );
+
+              }, child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SvgPicture.asset('assets/img/star.svg', width: 32, height: 32,)
+              ],), 
+                style: ElevatedButton.styleFrom(minimumSize: Size(100, 100), shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Remove bordas arredondadas
+                    ), backgroundColor: Colors.lightBlue),
+              )
+            ),
+            
+            SizedBox(width: 20,),
+
+            Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: BoxDecoration(
+                // color: Colors.lightBlue,
+                // border: Border.all(color: Colors.lightBlue, width: 2),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: ElevatedButton(onPressed: (){
+
+                gameMode = 'r';
+                difficult = 1;
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => ScreenGame(gameMode, difficult))
+                );
+
+              }, child: Center( child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Flexible(
+                    child: SvgPicture.asset('assets/img/star.svg', width: 32, height: 32),
+                  ),
+                  SizedBox(width: 4), // Ajuste o espaçamento se necessário
+                  Flexible(
+                    child: SvgPicture.asset('assets/img/star.svg', width: 32, height: 32),
+                  ),
+                ],)), 
+                style: ElevatedButton.styleFrom(minimumSize: Size(100, 100), shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Remove bordas arredondadas
+                    ), backgroundColor: Colors.lightBlue),
+              )
+            ),
+
+            SizedBox(width: 20,),
+
+            Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: BoxDecoration(
+                // color: Colors.lightBlue,
+                // border: Border.all(color: Colors.lightBlue, width: 2),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: ElevatedButton(onPressed: (){
+
+                gameMode = 'r';
+                difficult = 2;
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => ScreenGame(gameMode, difficult))
+                );
+
+              }, child: Center( child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Flexible(child: 
+                  SvgPicture.asset('assets/img/star.svg', width: 32, height: 32),
+                ),
+
+                Flexible(child: 
+                  SvgPicture.asset('assets/img/star.svg', width: 32, height: 32,)
+                ),
+
+                Flexible(child: 
+                  SvgPicture.asset('assets/img/star.svg', width: 32, height: 32,)
+                ),
+              ],)), 
+                style: ElevatedButton.styleFrom(minimumSize: Size(100, 100), shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Remove bordas arredondadas
+                    ), backgroundColor: Colors.lightBlue),
+              )
+            ),
+
+            ],
+          ),
+        )
+      ],),
+      )
         
     );
   }
