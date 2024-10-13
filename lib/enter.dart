@@ -13,8 +13,15 @@ class Enter extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/img/fundo_home.png'),
-              // const Text("Jogo da Velha", style: TextStyle(fontSize: 40, fontFamily: 'comic-sans'),),
+              Row(mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("TIC", style: TextStyle(fontSize: 40, fontFamily: 'Chakra', color: Colors.blue),),
+                  SizedBox(width: 20,),
+                  const Text("TAC", style: TextStyle(fontSize: 40, fontFamily: 'Chakra', color: Colors.red),),
+                  SizedBox(width: 20,),
+                  const Text("TOE", style: TextStyle(fontSize: 40, fontFamily: 'Chakra', color: Colors.green),),
+                ],
+              ),
         
               ElevatedButton(
                 onPressed: (){
@@ -23,7 +30,7 @@ class Enter extends StatelessWidget{
                   );
                 },
                 child: const Text('Play Game!', 
-                  style: TextStyle(fontFamily: 'Coiny', color: Colors.black, fontSize: 20),
+                  style: TextStyle(fontFamily: 'Chakra', color: Colors.black, fontSize: 20),
                 ),
               ),
           ],

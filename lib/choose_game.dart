@@ -86,8 +86,9 @@ class ChooseGameState extends State<ChooseGame>{
             )
           ],),
         )
-        :Container(
-          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+        :Container(child: Column(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
               width: 100.0,
@@ -183,10 +184,25 @@ class ChooseGameState extends State<ChooseGame>{
                     ), backgroundColor: Colors.lightBlue),
               )
             ),
-
+            SizedBox(height: 300,),
             ],
           ),
+
+          ElevatedButton(
+          onPressed: (){
+             setState(() {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ChooseGame()));
+             });
+          },
+          child: Row( mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/img/home.svg', width: 40, height: 40),
+            ],
+          ), style: ElevatedButton.styleFrom(backgroundColor: Colors.lightGreen, minimumSize: Size(30,30)),
+        ),
+          ],
         )
+        ),
       ],),
       )
         
