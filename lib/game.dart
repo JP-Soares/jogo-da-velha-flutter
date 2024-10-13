@@ -222,16 +222,12 @@ class Game {
 
       if(chooses.isNotEmpty){
         if(tabuleiro[0] == 'X' && tabuleiro[6] == 'X' && tabuleiro[3] == ''){
-          print('coluna 1');
           return jogada = 3;
         }else if(tabuleiro[0] == 'X' && tabuleiro[2] == 'X' && tabuleiro[1] == ''){
-          print('linha 1');
           return jogada = 1;
         }else if(tabuleiro[2] == 'X' && tabuleiro[8] == 'X' && tabuleiro[5] == ''){
-          print('coluna 3');
           return jogada = 5;
         }else if(tabuleiro[6] == 'X' && tabuleiro[8] == 'X' && tabuleiro[7] == ''){
-          print('linha 3');
           return jogada = 7;
         }else if(tabuleiro[0] == ''){//para jogar nos cantos
           return jogada = 0;
@@ -241,6 +237,10 @@ class Game {
           return jogada = 6;
         }else if(tabuleiro[8] == ''){
           return jogada = 8;
+        }else if(tabuleiro[4] == ''){
+          return jogada = 4;
+        }else if(tabuleiro[3] == ''){
+          return jogada = 3;
         }
       }
     }else{
