@@ -181,6 +181,25 @@ class Game {
 
 
     }else if(difficult == 2){//difícil
+
+      //para atacar
+      for(int j = 0; j < 9; j += 3){//linhas
+        if(tabuleiro[j] == 'O' && tabuleiro[j + 1] == 'O' && tabuleiro[j + 2] == ''){//verifica as linhas
+          return jogada = j + 2;
+        }
+      }
+
+      for(int k = 0; k < 3; k++){//colunas
+        if(tabuleiro[k] == 'O' && tabuleiro[k + 3] == 'O' && tabuleiro[k + 6] == ''){
+          return jogada = k + 6;
+        }else if(tabuleiro[k] == '' && tabuleiro[k + 3] == 'O' && tabuleiro[k + 6] == 'O'){
+          return jogada = k;
+        }
+      }
+
+
+
+      //para defender
       for(int i = 0; i < tabuleiro.length; i++){
         if(tabuleiro[i] != 'X' && tabuleiro[i] != 'O'){
           chooses.add(i);
@@ -190,7 +209,7 @@ class Game {
       }
 
       for(int j = 0; j < 9; j += 3){//linhas
-        if(tabuleiro[j] == 'X' && tabuleiro[j + 1] == 'X' && tabuleiro == ''){
+        if(tabuleiro[j] == 'X' && tabuleiro[j + 1] == 'X' && tabuleiro[j + 2] == ''){
           print('linhas');
           return jogada = j + 2;
         }
@@ -200,6 +219,8 @@ class Game {
         if(tabuleiro[k] == 'X' && tabuleiro[k + 3] == 'X' && tabuleiro[k + 6] == ''){
           print("coluna");
           return jogada = k + 6;
+        }else if(tabuleiro[k] == '' && tabuleiro[k + 3] == 'X' && tabuleiro[k + 6] == 'X'){
+          return jogada = k;
         }
       }
 
@@ -214,13 +235,17 @@ class Game {
         return jogada = 2;
       }else if (tabuleiro[4] == 'X' && tabuleiro[2] == 'X' && tabuleiro[6] == '') {
         return jogada = 6;
+      }else if(tabuleiro[0] == '' && tabuleiro[4] == 'O' && tabuleiro[8] == 'O'){
+        return jogada = 0;
+      }else if(tabuleiro[6] == 'O' && tabuleiro[4] == 'O' && tabuleiro[2] == ''){
+        return jogada = 2;
       }
 
       if(tabuleiro[4] == ''){//se o meio estiver vazio
         return jogada = 4;
       }
 
-      if(chooses.isNotEmpty){
+      else if(chooses.isNotEmpty){
         if(tabuleiro[0] == 'X' && tabuleiro[6] == 'X' && tabuleiro[3] == ''){
           return jogada = 3;
         }else if(tabuleiro[0] == 'X' && tabuleiro[2] == 'X' && tabuleiro[1] == ''){
@@ -229,18 +254,26 @@ class Game {
           return jogada = 5;
         }else if(tabuleiro[6] == 'X' && tabuleiro[8] == 'X' && tabuleiro[7] == ''){
           return jogada = 7;
-        }else if(tabuleiro[0] == ''){//para jogar nos cantos
+        }else if(tabuleiro[3] == 'X' && tabuleiro[4] == 'X' && tabuleiro[5] == ''){
+          return jogada = 5;
+        }else if(tabuleiro[0] == '' && tabuleiro[2] == 'X' && tabuleiro[1] == 'X'){//para jogar nos cantos
           return jogada = 0;
-        }else if(tabuleiro[2] == ''){
+        }else if(tabuleiro[2] == '' && tabuleiro[8] == 'X' && tabuleiro[5] == 'X'){
           return jogada = 2;
-        }else if(tabuleiro[6] == ''){
+        }else if(tabuleiro[6] == ''&& tabuleiro[8] == 'X' && tabuleiro[7] == 'X'){
           return jogada = 6;
+        }else if(tabuleiro[0] == 'X' && tabuleiro[2] == 'X' && tabuleiro[1] == ''){
+          return jogada = 1;
         }else if(tabuleiro[8] == ''){
           return jogada = 8;
         }else if(tabuleiro[4] == ''){
           return jogada = 4;
         }else if(tabuleiro[3] == ''){
           return jogada = 3;
+        }else if(tabuleiro[7] == ''){
+          return jogada = 7;
+        }else if(tabuleiro[6] == ''){
+          return jogada = 6;
         }
       }
     }else{

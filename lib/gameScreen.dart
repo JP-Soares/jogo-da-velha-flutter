@@ -8,8 +8,9 @@ import 'package:jogovelha/game.dart';
 class ScreenGame extends StatefulWidget{
   final String gameMode;
   final int difficult;
+  final String idioma;
 
-  const ScreenGame(this.gameMode, this.difficult, {Key? key}) : super(key: key);
+  const ScreenGame(this.idioma, this.gameMode, this.difficult, {Key? key}) : super(key: key);
 
     @override
     State<StatefulWidget> createState(){
@@ -19,12 +20,46 @@ class ScreenGame extends StatefulWidget{
 
 class ScreenGameState extends State<ScreenGame>{
 
+  List<String> textJogador = [];//texto do placar
+  List<String> textTitlePop = [];//texto do título do pop up de quem ganhou
+  String titleWin = '';//texto do resultado vencedor
+  String textButton1 = '';//texto do botão restart
+  String textButton2 = '';//texto do botão new game
+
+
   late Game game; // Declare a variável do tipo Game
   bool mostrarLinha = false;
 
   @override
   void initState() {
     super.initState();
+
+    if(widget.idioma == 'PT-BR'){
+      textJogador = ['Jogador 1', 'Jogador 2'];
+      textTitlePop = ['VENCEU!', 'EMPATE!'];
+      titleWin = 'FIM DE JOGO!';
+      textButton1 = 'REINICIAR';
+      textButton2 = 'NOVO JOGO';
+    }else if(widget.idioma == 'ENG'){
+      textJogador = ['Player 1', 'Player 2'];
+      textTitlePop = ['WINS!','DRAW!'];
+      titleWin = 'GAME OVER!';
+      textButton1 = 'RESTART';
+      textButton2 = 'NEW GAME';
+    }else if(widget.idioma == 'ESP'){
+      textJogador = ['Jugador 1', 'Jugador 2'];
+      textTitlePop = ['¡GANA!','¡EMPATE!'];
+      titleWin = '¡FIN DEL JUEGO!';
+      textButton1 = 'REINICIAR';
+      textButton2 = 'NUEVO JUEGO';
+    }else{
+      textJogador = ['Player 1', 'Player 2'];
+      textTitlePop = ['WINS!', 'DRAW!'];
+      titleWin = 'GAME OVER!';
+      textButton1 = 'RESTART';
+      textButton2 = 'NEW GAME';
+    }
+
     // Inicializa a variável 'game' com os valores recebidos
     game = Game(widget.gameMode, widget.difficult);
   }
@@ -57,7 +92,11 @@ class ScreenGameState extends State<ScreenGame>{
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      _playerMove(index); // Chama a função para a jogada do jogador
+                     if(game.tabuleiro[index] == '' && game.player == 'X'){
+                       _playerMove(index); // Chama a função para a jogada do jogador
+                     }else{
+                      return;
+                     }
                     },
                     // tabuleiro
                     child: Container(
@@ -91,7 +130,7 @@ class ScreenGameState extends State<ScreenGame>{
               mostrarLinha = false;
               game.restart();
               game.newGame();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ChooseGame()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ChooseGame(widget.idioma)));
              });
           },
           child: Row( mainAxisAlignment: MainAxisAlignment.center,
@@ -177,9 +216,9 @@ class ScreenGameState extends State<ScreenGame>{
         const SizedBox(height: 100,),//distância da primeira lnha do placar para o topo da página
         Row( mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Player 1", style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.red)),
+            Text(textJogador[0], style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.red)),
             const SizedBox(width: 100,),
-            Text("Player 2", style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.blue)),
+            Text(textJogador[1], style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.blue)),
           ],
           ),
           const SizedBox(height: 20,),//distância entre as duas linhas do placar
@@ -236,21 +275,22 @@ class ScreenGameState extends State<ScreenGame>{
     String text = '';
 
     if(game.winner == true){
-      text = '${game.playerWinner} WINS!';
+      text = '${game.playerWinner} ${textTitlePop[0]}';
     }else{
       colorText = Colors.lightGreen;
-      text = 'DRAW';
+      text = textTitlePop[1];
     }
 
 
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context){
 
       return
       AlertDialog(
         title: Text('${text}', textAlign: TextAlign.center, style: TextStyle(color: colorText, fontFamily: 'Coiny'),),
-        content: Text('END GAME!', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Coiny'),),
+        content: Text(titleWin, textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Coiny'),),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -259,7 +299,7 @@ class ScreenGameState extends State<ScreenGame>{
               });
               Navigator.pop(context);
             },
-            child: const Text('Restart'),
+            child: Text(textButton1, style: TextStyle(fontFamily: 'Coiny')),
           ),
           TextButton(
             onPressed: () {
@@ -268,7 +308,7 @@ class ScreenGameState extends State<ScreenGame>{
                 game.newGame();
               });
             },
-            child: const Text('New Game'),
+            child: Text(textButton2, style: TextStyle(fontFamily: 'Coiny')),
           ),
         ],
       );
