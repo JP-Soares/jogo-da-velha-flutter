@@ -406,9 +406,9 @@ class ChooseGameState extends State<ChooseGame> {
                 child: Column(
                   children: [
                     Row(children: [
-                      Text(textPlayer[0], style: TextStyle(fontFamily: 'Chakra', color: selectedColorX?.color ?? Colors.black, fontSize: 20)),//player x
+                      Text(textPlayer[0], style: TextStyle(fontFamily: 'Chakra', color: selectedColorX?.color ?? Colors.red, fontSize: 20)),//player x
                       SizedBox(width: 50),
-                      Text(textPlayer[1], style: TextStyle(fontFamily: 'Chakra', color: selectedColorO?.color ?? Colors.black, fontSize: 20))//player o
+                      Text(textPlayer[1], style: TextStyle(fontFamily: 'Chakra', color: selectedColorO?.color ?? Colors.blue, fontSize: 20))//player o
                     ],),
 
                     SizedBox(height: 20,),
