@@ -9,8 +9,10 @@ class ScreenGame extends StatefulWidget{
   final String gameMode;
   final int difficult;
   final String idioma;
+  final Color colorX;
+  final Color colorO;
 
-  const ScreenGame(this.idioma, this.gameMode, this.difficult, {Key? key}) : super(key: key);
+  const ScreenGame(this.colorX, this.colorO, this.idioma, this.gameMode, this.difficult, {Key? key}) : super(key: key);
 
     @override
     State<StatefulWidget> createState(){
@@ -80,7 +82,7 @@ class ScreenGameState extends State<ScreenGame>{
         
       Center( // tabuleiro
         child: SizedBox(
-          height: 500,
+          height: 600,
           child: Stack(
             children: [
               GridView.builder(
@@ -92,8 +94,10 @@ class ScreenGameState extends State<ScreenGame>{
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                     if(game.tabuleiro[index] == '' && game.player == 'X'){
+                     if(game.tabuleiro[index] == '' && game.player == 'X' && game.gameMode == 'r'){
                        _playerMove(index); // Chama a função para a jogada do jogador
+                     }else if(game.tabuleiro[index] == '' && game.gameMode == 'p'){
+                       _playerMove(index);
                      }else{
                       return;
                      }
@@ -146,9 +150,9 @@ class ScreenGameState extends State<ScreenGame>{
   //muda a cor do tabuleiro
   Color mudarCor(String player){
     if (game.player == 'X') {
-        return Colors.red;
+        return widget.colorX;
     }else {
-      return Colors.blue; // Ou você pode usar Colors.black se for 'O'
+      return widget.colorO; // Ou você pode usar Colors.black se for 'O'
     }
   }
 
@@ -191,7 +195,7 @@ class ScreenGameState extends State<ScreenGame>{
           game.tabuleiro[index] = game.player;
           colorPlayer[index] = mudarCor(game.player);
           game.changePlayer();
-          if(game.winner == false){
+          if(game.winner == false && game.gameMode == 'r'){
             _makeRobotMove();
           }
         }
@@ -216,9 +220,9 @@ class ScreenGameState extends State<ScreenGame>{
         const SizedBox(height: 100,),//distância da primeira lnha do placar para o topo da página
         Row( mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(textJogador[0], style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.red)),
+            Text(textJogador[0], style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: widget.colorX)),
             const SizedBox(width: 100,),
-            Text(textJogador[1], style: const TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.blue)),
+            Text(textJogador[1], style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: widget.colorO)),
           ],
           ),
           const SizedBox(height: 20,),//distância entre as duas linhas do placar
@@ -229,7 +233,7 @@ class ScreenGameState extends State<ScreenGame>{
                 children: [
                   TextSpan(
                     text: "X: ",
-                    style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.red),
+                    style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: widget.colorX),
                   ),
 
                   TextSpan(
@@ -250,7 +254,7 @@ class ScreenGameState extends State<ScreenGame>{
 
                   TextSpan(
                     text: ' :O',
-                    style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: Colors.blue),
+                    style: TextStyle(fontSize: 24, fontFamily: 'Coiny', color: widget.colorO),
                   ),
                 ],
               ),
@@ -267,9 +271,9 @@ class ScreenGameState extends State<ScreenGame>{
 
     Color colorText = Colors.black;
     if(game.playerWinner == 'X'){
-      colorText = Colors.red;
+      colorText = widget.colorX;
     }else if(game.playerWinner == 'O'){
-      colorText = Colors.blue;
+      colorText = widget.colorO;
     }
 
     String text = '';
