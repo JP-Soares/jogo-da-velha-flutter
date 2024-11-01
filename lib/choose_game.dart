@@ -418,7 +418,7 @@ class ChooseGameState extends State<ChooseGame> {
                         Expanded(
                           child: DropdownMenu<ColorLabel>(
                             //color X player
-                            initialSelection: selectedColorX ?? ColorLabel.green,
+                            initialSelection: selectedColorX ?? ColorLabel.red,
                             //controller: colorController,
                             // requestFocusOnTap is enabled/disabled by platforms when it is null.
                             // On mobile platforms, this is false by default. Setting this to true will
@@ -439,7 +439,7 @@ class ChooseGameState extends State<ChooseGame> {
                               return DropdownMenuEntry<ColorLabel>(
                                 value: color,
                                 label: color.label,
-                                enabled: color.label != 'Grey',
+                                enabled: color.label != 'Red',
                                 style: MenuItemButton.styleFrom(
                                   foregroundColor: color.color,
                                 ),
@@ -453,7 +453,7 @@ class ChooseGameState extends State<ChooseGame> {
                         Expanded(
                             child: DropdownMenu<ColorLabel>(
                           //color O player
-                          initialSelection: selectedColorO ?? ColorLabel.green,
+                          initialSelection: selectedColorO ?? ColorLabel.blue,
                           //controller: colorController,
                           // requestFocusOnTap is enabled/disabled by platforms when it is null.
                           // On mobile platforms, this is false by default. Setting this to true will
@@ -474,7 +474,7 @@ class ChooseGameState extends State<ChooseGame> {
                             return DropdownMenuEntry<ColorLabel>(
                               value: color,
                               label: color.label,
-                              enabled: color.label != 'Grey',
+                              enabled: color.label != 'Blue',
                               style: MenuItemButton.styleFrom(
                                 foregroundColor: color.color,
                               ),
