@@ -492,7 +492,14 @@ class ChooseGameState extends State<ChooseGame> {
                         child: Text(
                           textButton3,
                           style: TextStyle(fontSize: 20, fontFamily: 'Chakra', color: Colors.green),
-                        ))
+                        )),
+                    
+                    SizedBox(height: 10),
+
+                    TextButton(onPressed: (){
+                      Navigator.of(context).pop();
+                    }, child: Icon(Icons.close, color: Colors.red, size: 30),
+                    )
                   ],
                 ),
               ));
