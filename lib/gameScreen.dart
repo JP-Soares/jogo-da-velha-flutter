@@ -36,7 +36,10 @@ class ScreenGameState extends State<ScreenGame>{
   void initState() {
     super.initState();
 
+
+
     if(widget.idioma == 'PT-BR'){
+
       textJogador = ['Jogador 1', 'Jogador 2'];
       textTitlePop = ['VENCEU!', 'EMPATE!'];
       titleWin = 'FIM DE JOGO!';
@@ -76,16 +79,17 @@ class ScreenGameState extends State<ScreenGame>{
   Widget build(BuildContext context){
     return Scaffold(
 
-      body: Column( mainAxisAlignment: MainAxisAlignment.center, children: [
+      body: Column( mainAxisAlignment: MainAxisAlignment.start, children: [
       
       placar(),
         
-      Center( // tabuleiro
-        child: SizedBox(
-          height: 600,
+     // tabuleiro
+        Expanded(
+          //height: 400,
           child: Stack(
             children: [
               GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount( // Malha do tabuleiro
                   crossAxisCount: 3, // número de colunas
                   childAspectRatio: 1.0, // espaço entre as células
@@ -94,9 +98,9 @@ class ScreenGameState extends State<ScreenGame>{
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                     if(game.tabuleiro[index] == '' && game.player == 'X' && game.gameMode == 'r'){
+                     if(game.tabuleiro[index] == '' && game.player == 'X' && game.gameMode == 'r' && game.winner == false){
                        _playerMove(index); // Chama a função para a jogada do jogador
-                     }else if(game.tabuleiro[index] == '' && game.gameMode == 'p'){
+                     }else if(game.tabuleiro[index] == '' && game.gameMode == 'p' && game.winner == false){
                        _playerMove(index);
                      }else{
                       return;
@@ -126,8 +130,7 @@ class ScreenGameState extends State<ScreenGame>{
             ],
           ),
         ),
-      ),
-
+        SizedBox(height: 50,),
         ElevatedButton(
           onPressed: (){
              setState(() {
